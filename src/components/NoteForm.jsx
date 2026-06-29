@@ -8,9 +8,9 @@ import {
     Group,
 } from "@mantine/core";
 
-export function NoteForm({ onAdd }) {
-    const [title, setTitle] = useState("");
-    const [text, setText] = useState("");
+export function NoteForm({ note, onAdd, onUpdate, isEditMode }) {
+    const [title, setTitle] = useState(note?.title ?? "");
+    const [text, setText] = useState(note?.text ?? "");
 
     function handleAddNote() {
         if (text.trim() === "") return;
@@ -20,12 +20,21 @@ export function NoteForm({ onAdd }) {
         setText("");
     }
 
+    function handleUpdateNote() {
+        if (text.trim() === "") return;
+
+        onUpdate(note.id, title, text);
+    }
+
     return (
-        <Paper withBorder p="md" shadow="sm" radius="md">
+        <Paper
+            withBorder={!isEditMode}
+            p={isEditMode ? undefined : "md"}
+            shadow={isEditMode ? undefined : "sm"}
+        >
             <Stack gap="sm">
                 <TextInput
-                    label="Title"
-                    placeholder="Optional title"
+                    placeholder="Optional note title"
                     value={title}
                     onChange={(event) => {
                         setTitle(event.target.value);
@@ -33,8 +42,7 @@ export function NoteForm({ onAdd }) {
                 />
 
                 <Textarea
-                    label="Note"
-                    placeholder="Write something..."
+                    placeholder="Write you note here..."
                     autosize
                     minRows={3}
                     value={text}
@@ -45,10 +53,10 @@ export function NoteForm({ onAdd }) {
 
                 <Group justify="flex-end">
                     <Button
-                        onClick={handleAddNote}
+                        onClick={isEditMode ? handleUpdateNote : handleAddNote}
                         disabled={text.trim() === ""}
                     >
-                        Add note
+                        {isEditMode ? "Update" : "Add"}
                     </Button>
                 </Group>
             </Stack>

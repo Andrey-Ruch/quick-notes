@@ -2,11 +2,19 @@ import { Card, Group, Text, ActionIcon } from "@mantine/core";
 import { XIcon } from "@phosphor-icons/react";
 
 export function NoteCard({ note, onDelete, onOpen }) {
-    const { id, title, text, createdAt } = note;
-    const displayDate = new Date(createdAt).toLocaleString(undefined, {
+    const { id, title, text, createdAt, updatedAt } = note;
+    const displayCreatedDate = new Date(createdAt).toLocaleString(undefined, {
         dateStyle: "short",
         timeStyle: "short",
     });
+
+    let displayUpdatedDate;
+    if (updatedAt) {
+        displayUpdatedDate = new Date(updatedAt).toLocaleString(undefined, {
+            dateStyle: "short",
+            timeStyle: "short",
+        });
+    }
 
     function handleDelete(event) {
         event.stopPropagation();
@@ -27,11 +35,7 @@ export function NoteCard({ note, onDelete, onOpen }) {
             style={{ cursor: "pointer" }}
             onClick={handleClick}
         >
-            <Group justify="space-between" mb="xs">
-                <Text size="sm" c="dimmed">
-                    {displayDate}
-                </Text>
-
+            <Group justify="flex-end">
                 <ActionIcon
                     variant="subtle"
                     color="red"
@@ -49,6 +53,16 @@ export function NoteCard({ note, onDelete, onOpen }) {
             )}
 
             <Text style={{ whiteSpace: "pre-wrap" }}>{text}</Text>
+
+            <Text size="sm" c="dimmed" mt="md">
+                Created at: {displayCreatedDate}
+            </Text>
+
+            {displayUpdatedDate && (
+                <Text size="sm" c="dimmed">
+                    Updated at: {displayUpdatedDate}
+                </Text>
+            )}
         </Card>
     );
 }

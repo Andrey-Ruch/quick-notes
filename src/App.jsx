@@ -21,9 +21,27 @@ export default function App() {
             title,
             text,
             createdAt: new Date().toISOString(),
+            updatedAt: "",
         };
 
         setNotes([...notes, newNote]);
+    }
+
+    function updateNote(id, title, text) {
+        const updates = {
+            title,
+            text,
+            updatedAt: new Date().toISOString(),
+        };
+        const updatedNotes = notes.map((note) => {
+            if (note.id === id) {
+                return { ...note, ...updates };
+            }
+            return note;
+        });
+
+        setNotes([...updatedNotes]);
+        close();
     }
 
     function deleteNote(id) {
@@ -60,11 +78,14 @@ export default function App() {
                     </SimpleGrid>
                 )}
 
-                <NoteModal
-                    note={selectedNote}
-                    opened={opened}
-                    onClose={close}
-                />
+                {selectedNote && (
+                    <NoteModal
+                        note={selectedNote}
+                        onUpdate={updateNote}
+                        opened={opened}
+                        onClose={close}
+                    />
+                )}
             </Stack>
         </Container>
     );
