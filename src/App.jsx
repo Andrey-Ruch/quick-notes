@@ -1,10 +1,19 @@
 import { useState } from "react";
+
+// Mantine
+import { useDisclosure } from "@mantine/hooks";
 import { Container, Title, SimpleGrid, Stack, Text } from "@mantine/core";
+
+// Components
 import { NoteForm } from "./components/NoteForm";
 import { NoteCard } from "./components/NoteCard";
+import { NoteModal } from "./components/NoteModal";
 
 export default function App() {
     const [notes, setNotes] = useState([]);
+    const [selectedNote, setSelectedNote] = useState(null);
+
+    const [opened, { open, close }] = useDisclosure(false);
 
     function addNote(title, text) {
         const newNote = {
@@ -20,6 +29,11 @@ export default function App() {
     function deleteNote(id) {
         const updatedNotes = notes.filter((note) => note.id !== id);
         setNotes(updatedNotes);
+    }
+
+    function openNote(note) {
+        setSelectedNote(note);
+        open();
     }
 
     return (
@@ -40,10 +54,17 @@ export default function App() {
                                 key={note.id}
                                 note={note}
                                 onDelete={deleteNote}
+                                onOpen={openNote}
                             />
                         ))}
                     </SimpleGrid>
                 )}
+
+                <NoteModal
+                    note={selectedNote}
+                    opened={opened}
+                    onClose={close}
+                />
             </Stack>
         </Container>
     );

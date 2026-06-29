@@ -1,20 +1,32 @@
 import { Card, Group, Text, ActionIcon } from "@mantine/core";
 import { XIcon } from "@phosphor-icons/react";
 
-export function NoteCard({ note, onDelete }) {
+export function NoteCard({ note, onDelete, onOpen }) {
     const { id, title, text, createdAt } = note;
     const displayDate = new Date(createdAt).toLocaleString(undefined, {
         dateStyle: "short",
         timeStyle: "short",
     });
 
-    function handleDelete() {
+    function handleDelete(event) {
+        event.stopPropagation();
         const agree = confirm("Are you sure you want to delete your note?");
         if (agree) onDelete(id);
     }
 
+    function handleClick() {
+        onOpen(note);
+    }
+
     return (
-        <Card withBorder shadow="sm" radius="md" padding="md">
+        <Card
+            withBorder
+            shadow="sm"
+            radius="md"
+            padding="md"
+            style={{ cursor: "pointer" }}
+            onClick={handleClick}
+        >
             <Group justify="space-between" mb="xs">
                 <Text size="sm" c="dimmed">
                     {displayDate}
@@ -24,7 +36,7 @@ export function NoteCard({ note, onDelete }) {
                     variant="subtle"
                     color="red"
                     aria-label="Delete note"
-                    onClick={() => handleDelete()}
+                    onClick={handleDelete}
                 >
                     <XIcon size={18} />
                 </ActionIcon>
