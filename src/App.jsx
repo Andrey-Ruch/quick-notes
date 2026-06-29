@@ -17,9 +17,6 @@ export default function App() {
     }
 
     function deleteNote(id) {
-        // const noteIndexToDelete = notes.findIndex((note) => note.id === id);
-        // console.log("noteIndexToDelete:", noteIndexToDelete);
-
         const updatedNotes = notes.filter((note) => note.id !== id);
         setNotes(updatedNotes);
     }
