@@ -2,16 +2,22 @@ import { Card, Group, Text, ActionIcon } from "@mantine/core";
 import { XIcon } from "@phosphor-icons/react";
 
 export function NoteCard({ note, onDelete }) {
+    const { id, title, text, createdAt } = note;
+    const displayDate = new Date(createdAt).toLocaleString(undefined, {
+        dateStyle: "short",
+        timeStyle: "short",
+    });
+
     function handleDelete() {
         const agree = confirm("Are you sure you want to delete your note?");
-        if (agree) onDelete(note.id);
+        if (agree) onDelete(id);
     }
 
     return (
         <Card withBorder shadow="sm" radius="md" padding="md">
             <Group justify="space-between" mb="xs">
-                <Text size="sm" c="dimmed" mb="xs">
-                    {new Date(note.createdAt).toLocaleString()}
+                <Text size="sm" c="dimmed">
+                    {displayDate}
                 </Text>
 
                 <ActionIcon
@@ -24,7 +30,13 @@ export function NoteCard({ note, onDelete }) {
                 </ActionIcon>
             </Group>
 
-            <Text style={{ whiteSpace: "pre-wrap" }}>{note.text}</Text>
+            {title && (
+                <Text fw={600} size="lg" mb={4}>
+                    {title}
+                </Text>
+            )}
+
+            <Text style={{ whiteSpace: "pre-wrap" }}>{text}</Text>
         </Card>
     );
 }

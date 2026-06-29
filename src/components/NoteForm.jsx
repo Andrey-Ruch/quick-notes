@@ -1,21 +1,39 @@
 import { useState } from "react";
-import { Textarea, Button, Paper, Stack, Group } from "@mantine/core";
+import {
+    Textarea,
+    TextInput,
+    Button,
+    Paper,
+    Stack,
+    Group,
+} from "@mantine/core";
 
 export function NoteForm({ onAdd }) {
+    const [title, setTitle] = useState("");
     const [text, setText] = useState("");
 
     function handleAddNote() {
         if (text.trim() === "") return;
 
-        onAdd(text);
+        onAdd(title, text);
+        setTitle("");
         setText("");
     }
 
     return (
         <Paper withBorder p="md" shadow="sm" radius="md">
             <Stack gap="sm">
+                <TextInput
+                    label="Title"
+                    placeholder="Optional title"
+                    value={title}
+                    onChange={(event) => {
+                        setTitle(event.target.value);
+                    }}
+                />
+
                 <Textarea
-                    label="New note"
+                    label="Note"
                     placeholder="Write something..."
                     autosize
                     minRows={3}

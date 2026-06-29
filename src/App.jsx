@@ -6,9 +6,10 @@ import { NoteCard } from "./components/NoteCard";
 export default function App() {
     const [notes, setNotes] = useState([]);
 
-    function addNote(text) {
+    function addNote(title, text) {
         const newNote = {
             id: crypto.randomUUID(),
+            title,
             text,
             createdAt: new Date().toISOString(),
         };
