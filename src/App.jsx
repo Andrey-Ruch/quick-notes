@@ -16,6 +16,14 @@ export default function App() {
         setNotes([...notes, newNote]);
     }
 
+    function deleteNote(id) {
+        // const noteIndexToDelete = notes.findIndex((note) => note.id === id);
+        // console.log("noteIndexToDelete:", noteIndexToDelete);
+
+        const updatedNotes = notes.filter((note) => note.id !== id);
+        setNotes(updatedNotes);
+    }
+
     return (
         <Container size="sm" py="xl">
             <Stack gap="xl">
@@ -30,7 +38,11 @@ export default function App() {
                 ) : (
                     <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
                         {notes.map((note) => (
-                            <NoteCard key={note.id} note={note} />
+                            <NoteCard
+                                key={note.id}
+                                note={note}
+                                onDelete={deleteNote}
+                            />
                         ))}
                     </SimpleGrid>
                 )}
