@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Mantine
 import { useDisclosure } from "@mantine/hooks";
@@ -9,9 +9,18 @@ import { NoteForm } from "./components/NoteForm";
 import { NoteCard } from "./components/NoteCard";
 import { NoteModal } from "./components/NoteModal";
 
+const STORAGE_KEY = "quicknotes-notes";
+
 export default function App() {
-    const [notes, setNotes] = useState([]);
+    const [notes, setNotes] = useState(() => {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+    });
     const [selectedNote, setSelectedNote] = useState(null);
+
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+    }, [notes]);
 
     const [opened, { open, close }] = useDisclosure(false);
 
