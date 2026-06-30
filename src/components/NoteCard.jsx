@@ -1,8 +1,10 @@
-import { Card, Group, Text, ActionIcon } from "@mantine/core";
+import { Card, Group, Text, ActionIcon, Badge } from "@mantine/core";
 import { XIcon } from "@phosphor-icons/react";
+import { getCategory } from "../categories";
 
 export function NoteCard({ note, onDelete, onOpen }) {
     const { id, title, text, createdAt, updatedAt } = note;
+    const { color, label } = getCategory(note.category);
     const displayCreatedDate = new Date(createdAt).toLocaleString(undefined, {
         dateStyle: "short",
         timeStyle: "short",
@@ -32,10 +34,17 @@ export function NoteCard({ note, onDelete, onOpen }) {
             shadow="sm"
             radius="md"
             padding="md"
-            style={{ cursor: "pointer" }}
+            style={{
+                cursor: "pointer",
+                backgroundColor: `var(--mantine-color-${color}-light)`,
+            }}
             onClick={handleClick}
         >
-            <Group justify="flex-end">
+            <Group justify="space-between">
+                <Badge color={color} variant="light" px={0}>
+                    {label}
+                </Badge>
+
                 <ActionIcon
                     variant="subtle"
                     color="red"

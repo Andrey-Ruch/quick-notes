@@ -24,11 +24,12 @@ export default function App() {
 
     const [opened, { open, close }] = useDisclosure(false);
 
-    function addNote(title, text) {
+    function addNote(title, text, category) {
         const newNote = {
             id: crypto.randomUUID(),
             title,
             text,
+            category,
             createdAt: new Date().toISOString(),
             updatedAt: "",
         };
@@ -36,10 +37,11 @@ export default function App() {
         setNotes([...notes, newNote]);
     }
 
-    function updateNote(id, title, text) {
+    function updateNote(id, title, text, category) {
         const updates = {
             title,
             text,
+            category,
             updatedAt: new Date().toISOString(),
         };
         const updatedNotes = notes.map((note) => {
